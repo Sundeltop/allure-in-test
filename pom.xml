@@ -53,6 +53,11 @@
             <version>${allure.version}</version>
             <scope>compile</scope>
         </dependency>
+        <dependency>
+            <groupId>io.qameta.allure</groupId>
+            <artifactId>allure-assertj</artifactId>
+            <version>${allure.version}</version>
+        </dependency>
     </dependencies>
 
     <build>
