@@ -1,6 +1,8 @@
 package com.example;
 
 import com.codeborne.selenide.logevents.SelenideLogger;
+import com.example.jupiter.AllureEnvironmentExtension;
+import com.example.jupiter.AssertFailAllureScreenshotExtension;
 import io.qameta.allure.selenide.AllureSelenide;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
@@ -10,7 +12,7 @@ import static com.codeborne.selenide.Selenide.open;
 import static com.codeborne.selenide.Selenide.title;
 import static org.assertj.core.api.Assertions.assertThat;
 
-@ExtendWith(AssertFailScreenshotExtension.class)
+@ExtendWith({AssertFailAllureScreenshotExtension.class, AllureEnvironmentExtension.class})
 public class MySimpleTest {
 
     @BeforeAll

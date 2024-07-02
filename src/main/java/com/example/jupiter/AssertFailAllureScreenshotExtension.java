@@ -1,4 +1,4 @@
-package com.example;
+package com.example.jupiter;
 
 import com.codeborne.selenide.Selenide;
 import com.codeborne.selenide.WebDriverRunner;
@@ -13,7 +13,7 @@ import java.io.ByteArrayInputStream;
 import static java.util.Objects.requireNonNull;
 import static org.openqa.selenium.OutputType.BYTES;
 
-public class AssertFailScreenshotExtension implements TestExecutionExceptionHandler, LifecycleMethodExecutionExceptionHandler {
+public class AssertFailAllureScreenshotExtension implements TestExecutionExceptionHandler, LifecycleMethodExecutionExceptionHandler {
 
     @Override
     public void handleTestExecutionException(ExtensionContext context, Throwable throwable) throws Throwable {
