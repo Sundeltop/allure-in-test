@@ -11,6 +11,7 @@ import java.util.Properties;
 import static com.codeborne.selenide.Configuration.browser;
 import static com.codeborne.selenide.Configuration.browserSize;
 import static java.lang.System.getProperty;
+import static java.util.Optional.ofNullable;
 import static org.junit.jupiter.api.extension.ExtensionContext.Namespace.GLOBAL;
 
 @Log4j2
@@ -39,9 +40,9 @@ public class AllureEnvironmentExtension implements AfterAllCallback {
                 Properties props = new Properties();
                 props.setProperty("selenide.browser", browser);
                 props.setProperty("selenide.browserSize", browserSize);
-                props.setProperty("os", getProperty("os.name"));
-                props.setProperty("user", getProperty("user.name"));
-                props.setProperty("java.version", getProperty("java.version"));
+                ofNullable(getProperty("os.name")).ifPresent(property -> props.setProperty("os", property));
+                ofNullable(getProperty("user.name")).ifPresent(property -> props.setProperty("user", property));
+                ofNullable(getProperty("java.version")).ifPresent(property -> props.setProperty("java", property));
 
                 props.store(fos, null);
             } catch (IOException e) {
