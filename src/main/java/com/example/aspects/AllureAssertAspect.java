@@ -18,6 +18,7 @@ import static io.qameta.allure.util.ResultsUtils.getStatus;
 import static io.qameta.allure.util.ResultsUtils.getStatusDetails;
 import static java.util.UUID.randomUUID;
 
+@SuppressWarnings("unused")
 @Aspect
 public class AllureAssertAspect {
 
@@ -37,8 +38,8 @@ public class AllureAssertAspect {
         final String uuid = randomUUID().toString();
         final String name = "assertThat('%s')".formatted(actual);
 
-        final StepResult result = (new StepResult()).
-                setName(name)
+        final StepResult result = new StepResult()
+                .setName(name)
                 .setStatus(PASSED);
 
         lifecycle.startStep(uuid, result);
@@ -53,8 +54,7 @@ public class AllureAssertAspect {
                 ? String.format("%s('%s')", methodSignature.getName(), arrayToString(joinPoint.getArgs()))
                 : methodSignature.getName();
 
-        final StepResult result = (new StepResult())
-                .setName(name);
+        final StepResult result = new StepResult().setName(name);
 
         lifecycle.startStep(uuid, result);
     }
