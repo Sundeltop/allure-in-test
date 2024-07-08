@@ -1,0 +1,1 @@
+{"8101422078009478315af4581070e8b5":{"statistic":{"failed":0,"broken":0,"skipped":0,"passed":1,"unknown":0,"total":1},"items":[{"uid":"dcec5d5485dc2f37","reportUrl":"https://Sundeltop.github.io/allure-in-test/15//#testresult/dcec5d5485dc2f37","status":"passed","time":{"start":1720441389560,"stop":1720441394021,"duration":4461}}]}}
