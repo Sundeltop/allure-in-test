@@ -9,7 +9,7 @@ jobs:
       - name: Checkout Project
         uses: actions/checkout@v4
 
-      - name: Set Up JDK 22
+      - name: Setup JDK 22
         uses: actions/setup-java@v4
         with:
           distribution: 'temurin'
@@ -17,9 +17,33 @@ jobs:
           cache: maven
 
       - name: Start Selenoid
-        uses: |
+        run: |
           curl -s https://aerokube.com/cm/bash | bash
           ./cm selenoid start --browsers-json src/main/resources/selenoid/browsers.json --force
 
       - name: Build Project
-        run: mvn clean package -DskipTests
+        run: mvn clean test
+
+      - name: Load Allure Report History
+        uses: actions/checkout@v4
+        if: always()
+        continue-on-error: true
+        with:
+          ref: gh-pages
+          path: gh-pages
+
+      - name: Build Allure Report
+        uses: simple-elf/allure-report-action@v1.9
+        if: always()
+        with:
+          gh_pages: gh-pages
+          allure_history: allure-history
+          allure_results: target/allure-results
+
+      - name: Deploy Allure Report
+        uses: peaceiris/actions-gh-pages@v4
+        if: always()
+        with:
+          github_token: ${{secrets.GITHUB_TOKEN}}
+          publish_branch: gh-pages
+          publish_dir: allure-history
