@@ -1,0 +1,2 @@
+"Status","Start Time","Stop Time","Duration in ms","Parent Suite","Suite","Sub Suite","Test Class","Test Method","Name","Description"
+"passed","Mon Jul 08 12:34:02 GMT 2024","Mon Jul 08 12:34:07 GMT 2024","4278","","com.example.GoogleTest","","com.example.GoogleTest","verifySearchResultIsDisplayed","verifySearchResultIsDisplayed()",""
