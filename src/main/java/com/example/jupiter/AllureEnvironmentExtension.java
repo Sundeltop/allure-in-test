@@ -1,8 +1,6 @@
 package com.example.jupiter;
 
 import lombok.extern.log4j.Log4j2;
-import org.junit.jupiter.api.extension.AfterAllCallback;
-import org.junit.jupiter.api.extension.ExtensionContext;
 
 import java.io.FileOutputStream;
 import java.io.IOException;
@@ -12,42 +10,30 @@ import static com.codeborne.selenide.Configuration.browser;
 import static com.codeborne.selenide.Configuration.browserSize;
 import static java.lang.System.getProperty;
 import static java.util.Optional.ofNullable;
-import static org.junit.jupiter.api.extension.ExtensionContext.Namespace.GLOBAL;
 
 @Log4j2
-public class AllureEnvironmentExtension implements AfterAllCallback {
+public class AllureEnvironmentExtension implements SuiteExtension {
 
     @Override
-    public void afterAll(ExtensionContext extensionContext) {
-        extensionContext
-                .getRoot()
-                .getStore(GLOBAL)
-                .getOrComputeIfAbsent(this.getClass(), key -> new AfterTestsCallback());
+    public void afterSuite() {
+        createAllureEnvironmentFile();
     }
 
-    private static class AfterTestsCallback implements ExtensionContext.Store.CloseableResource {
+    private void createAllureEnvironmentFile() {
+        final String pathToFile = "%s/environment.properties".formatted(getProperty("allure.results.directory"));
 
-        @Override
-        public void close() {
-            createAllureEnvironmentFile();
-        }
+        try (FileOutputStream fos = new FileOutputStream(pathToFile)) {
 
-        private void createAllureEnvironmentFile() {
-            final String pathToFile = "%s/environment.properties".formatted(getProperty("allure.results.directory"));
+            Properties props = new Properties();
+            props.setProperty("selenide.browser", browser);
+            props.setProperty("selenide.browserSize", browserSize);
+            ofNullable(getProperty("os.name")).ifPresent(property -> props.setProperty("os", property));
+            ofNullable(getProperty("user.name")).ifPresent(property -> props.setProperty("user", property));
+            ofNullable(getProperty("java.version")).ifPresent(property -> props.setProperty("java", property));
 
-            try (FileOutputStream fos = new FileOutputStream(pathToFile)) {
-
-                Properties props = new Properties();
-                props.setProperty("selenide.browser", browser);
-                props.setProperty("selenide.browserSize", browserSize);
-                ofNullable(getProperty("os.name")).ifPresent(property -> props.setProperty("os", property));
-                ofNullable(getProperty("user.name")).ifPresent(property -> props.setProperty("user", property));
-                ofNullable(getProperty("java.version")).ifPresent(property -> props.setProperty("java", property));
-
-                props.store(fos, null);
-            } catch (IOException e) {
-                log.error("IO problem when writing allure.properties file", e);
-            }
+            props.store(fos, null);
+        } catch (IOException e) {
+            log.error("IO problem when writing allure.properties file", e);
         }
     }
 }
